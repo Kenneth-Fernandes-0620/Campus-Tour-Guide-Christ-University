@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Christ Tour Guide</string>
+    <string name="image_view">Image View</string>
+    <string name="detect">Detect</string>
+    <string name="run_model">Running the model...</string>
+    <string name="restart">Restart</string>
+    <string name="select">Select</string>
+    <string name="live">Live</string>
+    <string name="mapbox_access_token">pk.eyJ1IjoicHJlcmFuYWsiLCJhIjoiY2xuMTQ3Zm92MGVxODJqcDRzaWQxeHE1ZSJ9.Ttf-IgVH9W721p_LCOvoSw</string>
+    <string name="heading">"Heading: %1$s"</string>
+</resources>
