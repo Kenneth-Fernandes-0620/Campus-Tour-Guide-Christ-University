@@ -159,9 +159,9 @@ public class ObjectDetectionActivity extends AbstractCameraXActivity<ObjectDetec
         infobtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i= new Intent(ObjectDetectionActivity.this,DisplayActivity.class);
-                i.putExtra("blockname",title1);
-                startActivity(i);
+//                Intent i= new Intent(ObjectDetectionActivity.this,DisplayActivity.class);
+//                i.putExtra("blockname",title1);
+//                startActivity(i);
             }
         });
     }

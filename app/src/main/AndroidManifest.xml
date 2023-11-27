@@ -6,9 +6,12 @@
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- location Permission -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- Permission to auto start after reboot -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" /><!-- Required for background services on Oreo and Below   -->
 
     <uses-feature
         android:name="android.hardware.sensor.accelerometer"
@@ -27,11 +30,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service
+            android:name=".location.LocationMonitor"
+            android:enabled="true" />
+
         <activity
             android:name=".Surrounding_Activity"
-            android:exported="false" />
-        <activity
-            android:name=".CompassActivity"
             android:exported="false" />
         <activity
             android:name=".DisplayActivity"
@@ -59,6 +63,24 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <receiver
+            android:name=".location.GeofenceBroadcastReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="org.pytorch.demo.objectdetection.GEOFENCE_TRANSITION" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name="AutoStartServiceReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".location.LocationMonitor" />
+
     </application>
 
 </manifest>

@@ -38,45 +38,46 @@ import java.util.Locale;
 
 public class DisplayActivity extends AppCompatActivity {
 
-    ImageView capimg,mapimg;
-    ImageButton arrow,arrow1,arrow2,arrowd;
-    LinearLayout hiddenView,hiddenView2;
-    LinearLayout hiddenView1,hiddenViewd;
-    CardView cardView,cardView1,cardView2,cardViewd;
+    ImageView capimg, mapimg;
+    ImageButton arrow, arrow1, arrow2, arrowd;
+    LinearLayout hiddenView, hiddenView2;
+    LinearLayout hiddenView1, hiddenViewd;
+    CardView cardView, cardView1, cardView2, cardViewd;
     ArrayList<ListData> modelArrayList;
 
-    public String type="";
-    TextView title,estabinfo,floorinfo,history,loctext;
+    public String type = "";
+    TextView title, estabinfo, floorinfo, history, loctext;
     DatabaseHandler db;
-    RecyclerView rv,rv1,rv2;
-    String blockname="";
+    RecyclerView rv, rv1, rv2;
+    String blockname = "";
     MyListAdapter ml;
     TextToSpeech textToSpeech;
     ImageButton cb;
-    ImageButton la,ra,ua,da,relocate;
+    ImageButton la, ra, ua, da, relocate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
         Intent intent = getIntent();
-        blockname=intent.getStringExtra("blockname");
-        title=findViewById(R.id.title);
-        title.setText(blockname);
-        cb=findViewById(R.id.camerabtn);
-        estabinfo=findViewById(R.id.estab_info);
-        floorinfo=findViewById(R.id.floor_info);
+//        blockname = intent.getStringExtra("blockname");
+        title = findViewById(R.id.title);
+//        title.setText(blockname);
+        cb = findViewById(R.id.camerabtn);
+        estabinfo = findViewById(R.id.estab_info);
+        floorinfo = findViewById(R.id.floor_info);
 //        ra=findViewById(R.id.rightarrow);
 //        la=findViewById(R.id.leftarrow);
 //        ua=findViewById(R.id.uparrow);
 //        da=findViewById(R.id.downarrow);
 //        loctext=findViewById(R.id.loctext);
 //        relocate=findViewById(R.id.relocate);
-        Pronunciation p= new Pronunciation(getApplicationContext());
+        Pronunciation p = new Pronunciation(getApplicationContext());
 
-        db= new DatabaseHandler(this);
+        db = new DatabaseHandler(this);
         rv = findViewById(R.id.officedatarv);
-        rv1=findViewById(R.id.officedatarv1);
-        rv2=findViewById(R.id.officedatarv2);
+        rv1 = findViewById(R.id.officedatarv1);
+        rv2 = findViewById(R.id.officedatarv2);
 
         rv.setHasFixedSize(false);
 
@@ -94,8 +95,8 @@ public class DisplayActivity extends AppCompatActivity {
         cardViewd = findViewById(R.id.desc_cardview);
         arrowd = findViewById(R.id.arrow_button_d);
         hiddenViewd = findViewById(R.id.hidden_view_d);
-        history=findViewById(R.id.history);
-      //  mapimg=findViewById(R.id.mapimg);
+        history = findViewById(R.id.history);
+        //  mapimg=findViewById(R.id.mapimg);
 
 
         Handler handler = new Handler();
@@ -103,7 +104,7 @@ public class DisplayActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // Your code to run after a delay. in my case in another handler
-                p.speak("You are in front of "+blockname+". To know more about the block, please refer to the details below.", TextToSpeech.QUEUE_FLUSH);
+                p.speak("You are in front of " + blockname + ". To know more about the block, please refer to the details below.", TextToSpeech.QUEUE_FLUSH);
             }
         }, 3000);
 
@@ -112,7 +113,7 @@ public class DisplayActivity extends AppCompatActivity {
             public void onInit(int i) {
 
                 // if No error is found then only it will run
-                if(i!=TextToSpeech.ERROR){
+                if (i != TextToSpeech.ERROR) {
                     // To Choose language of speech
                     textToSpeech.setLanguage(Locale.UK);
                 }
@@ -134,7 +135,6 @@ public class DisplayActivity extends AppCompatActivity {
             }
 
         });
-
 
 
 //        ra.setOnTouchListener(new View.OnTouchListener() {
@@ -225,7 +225,7 @@ public class DisplayActivity extends AppCompatActivity {
                 TransitionManager.beginDelayedTransition(cardView, new AutoTransition());
                 hiddenView.setVisibility(View.VISIBLE);
                 hiddenView1.setVisibility(View.GONE);
-                type="office";
+                type = "office";
                 hiddenView2.setVisibility(View.GONE);
                 arrow.setImageResource(R.drawable.baseline_keyboard_arrow_up_24);
                 arrow1.setImageResource(R.drawable.baseline_keyboard_arrow_down_24);
@@ -255,7 +255,7 @@ public class DisplayActivity extends AppCompatActivity {
                 arrow1.setImageResource(R.drawable.baseline_keyboard_arrow_up_24);
                 arrow.setImageResource(R.drawable.baseline_keyboard_arrow_down_24);
                 arrow2.setImageResource(R.drawable.baseline_keyboard_arrow_down_24);
-                type="department";
+                type = "department";
                 setData(type);
             }
         });
@@ -281,36 +281,32 @@ public class DisplayActivity extends AppCompatActivity {
                 arrow2.setImageResource(R.drawable.baseline_keyboard_arrow_up_24);
                 arrow1.setImageResource(R.drawable.baseline_keyboard_arrow_down_24);
                 arrow.setImageResource(R.drawable.baseline_keyboard_arrow_down_24);
-                type="others";
+                type = "others";
                 setData(type);
             }
         });
 
         Bitmap bitmap = BitmapData.getInstance().getBitmap();
-        capimg=findViewById(R.id.capimg);
+        capimg = findViewById(R.id.capimg);
         capimg.setImageBitmap(bitmap);
 
         cb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(DisplayActivity.this,ObjectDetectionActivity.class);
+                Intent i = new Intent(DisplayActivity.this, ObjectDetectionActivity.class);
                 startActivity(i);
             }
         });
 
-        if(blockname.equals("Central Block"))
-        {
+        if (blockname.equals("Central Block")) {
             estabinfo.setText("2010");
             history.setText("The Central Block is one of the most important buildings in the main campus of the university. It was inaugurated in the year 2010. This building houses some of the important infrastructure provided by the university such as the Knowledge Centre (PG Library) and Chapel, established in 2011.");
             floorinfo.setText("10");
-        }
-        else if(blockname.equals("Block 1"))
-        {
+        } else if (blockname.equals("Block 1")) {
             estabinfo.setText("1969");
             floorinfo.setText("2");
             history.setText("Block 1 was constructed and inaugurated in the year 1969. This marked a momentous occasion as it was blessed in preparation for the commencement of the first academic year on July 15 at 9:30 AM. The institution proudly initiated its educational journey by introducing one-year Pre-University Courses (PUC) under Bangalore University, setting the stage for a promising and enriching academic experience for the incoming students.");
-        }
-        else if(blockname.equals("Block 2")){
+        } else if (blockname.equals("Block 2")) {
             estabinfo.setText("1990");
             history.setText("N/A");
             floorinfo.setText("3");
@@ -321,29 +317,25 @@ public class DisplayActivity extends AppCompatActivity {
 
     }
 
-    void setData(String type)
-    {
+    void setData(String type) {
 
-        List<Building_Info> data = db.getAllBuilding_Info(blockname.toLowerCase(),type);
+        List<Building_Info> data = db.getAllBuilding_Info(blockname.toLowerCase(), type);
         modelArrayList.clear();
         //Toast.makeText(getApplicationContext(),blockname.toLowerCase()+type,Toast.LENGTH_SHORT).show();
         for (Building_Info cn : data) {
 
             //   Toast.makeText(getApplicationContext(),cn.getName(),Toast.LENGTH_SHORT).show();
-            modelArrayList.add(new ListData(cn.getName(),cn.getRoomNo()));
-            ml = new MyListAdapter( modelArrayList);
+            modelArrayList.add(new ListData(cn.getName(), cn.getRoomNo()));
+            ml = new MyListAdapter(modelArrayList);
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-            if (type.equals("office"))
-            {
+            if (type.equals("office")) {
                 rv.setLayoutManager(linearLayoutManager);
                 rv.setAdapter(ml);
-            }
-            else if (type.equals("department")) {
+            } else if (type.equals("department")) {
                 rv1.setLayoutManager(linearLayoutManager);
                 rv1.setAdapter(ml);
-            }
-            else{
+            } else {
                 rv2.setLayoutManager(linearLayoutManager);
                 rv2.setAdapter(ml);
             }
