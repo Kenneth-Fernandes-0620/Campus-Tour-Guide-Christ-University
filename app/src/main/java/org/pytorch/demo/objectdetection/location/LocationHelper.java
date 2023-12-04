@@ -5,6 +5,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
@@ -15,18 +16,20 @@ public class LocationHelper {
     public LocationManager locationManager;
     public LocationListener locationListener;
     public static int LOCATION_PERMISSION_ID = 44;
+    public double latitude;
+    public double longitude;
 
 
     public LocationHelper(LocationManager locationManager) {
         this.locationManager = locationManager;
     }
 
-    public void listenForLocationUpdates(SensorHelper sensorHelper) {
+    public void listenForLocationUpdates() {
         this.locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
-                sensorHelper.currentLatitude = location.getLatitude();
-                sensorHelper.currentLongitude = location.getLongitude();
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
             }
 
             @Override

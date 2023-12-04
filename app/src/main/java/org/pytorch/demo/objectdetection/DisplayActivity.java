@@ -39,6 +39,7 @@ import java.util.Locale;
 public class DisplayActivity extends AppCompatActivity {
 
     ImageView capimg, mapimg;
+    VrPanoramaView panoramaView;
     ImageButton arrow, arrow1, arrow2, arrowd;
     LinearLayout hiddenView, hiddenView2;
     LinearLayout hiddenView1, hiddenViewd;

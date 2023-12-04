@@ -1,14 +1,13 @@
 package org.pytorch.demo.objectdetection;
 
 import android.Manifest;
-import android.app.PendingIntent;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -22,17 +21,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.google.android.gms.location.Geofence;
-import com.google.android.gms.location.GeofencingRequest;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.pytorch.demo.objectdetection.location.GeofenceHelper;
-import org.pytorch.demo.objectdetection.location.LatLong;
 import org.pytorch.demo.objectdetection.location.LocationHelper;
+import org.pytorch.demo.objectdetection.location.LocationMonitorService;
 import org.pytorch.demo.objectdetection.sensors.SensorHelper;
-
-import java.util.Map;
 
 
 public class HomeScreen extends AppCompatActivity implements SensorEventListener {
@@ -43,7 +36,6 @@ public class HomeScreen extends AppCompatActivity implements SensorEventListener
     private FloatingActionButton editFab, saveFab, signupFab;
     private Animation fabOpen, fabClose, rotateForward, rotateBackward;
     private static final String TAG = "HomeScreen";
-    private GeofenceHelper geofenceHelper;
 
 
     @Override
@@ -77,34 +69,9 @@ public class HomeScreen extends AppCompatActivity implements SensorEventListener
         saveFab.setOnClickListener(v -> startActivity(new Intent(HomeScreen.this, MainActivity.class)));
         signupFab.setOnClickListener(v -> startActivity(new Intent(HomeScreen.this, MainActivity.class)));
 
-        sensorHelper = new SensorHelper(this); // sensors
-        locationHelper = new LocationHelper((LocationManager) getSystemService(Context.LOCATION_SERVICE)); // location
-        geofenceHelper = new GeofenceHelper(this, LocationServices.getGeofencingClient(this)); // geofencing
+//        sensorHelper = new SensorHelper(this); // sensors
+//        locationHelper = new LocationHelper((LocationManager) getSystemService(Context.LOCATION_SERVICE), (TextView) findViewById(R.id.heading)); // location
     }
-
-    private void createGeoFence() {
-        for (Map.Entry<String, double[]> geofence : GeofenceHelper.GEOFENCE_List.entrySet())
-            addGeofence(geofence.getKey(), new LatLong(geofence.getValue()[0], geofence.getValue()[1]), (float) geofence.getValue()[2]);
-    }
-
-    private void removeGeoFence() {
-        geofenceHelper.geofencingClient.removeGeofences(geofenceHelper.getPendingIntent());
-    }
-
-
-    private void addGeofence(String id, LatLong latLong, float radius) {
-        Geofence geofence = geofenceHelper.getGeofence(id, latLong, radius);
-        GeofencingRequest geofencingRequest = geofenceHelper.getGeofencingRequest(geofence);
-        PendingIntent pendingIntent = geofenceHelper.getPendingIntent();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        geofenceHelper.geofencingClient
-                .addGeofences(geofencingRequest, pendingIntent)
-                .addOnSuccessListener(success -> Log.d(TAG, "addGeofence (on Success): Geofence " + id + " Added"))
-                .addOnFailureListener(failure -> Log.d(TAG, "addGeofence (on Failure): id: " + id + "," + geofenceHelper.getErrorString(failure)));
-    }
-
 
     private void animateFab() {
         if (areAllFabsVisible) {
@@ -135,19 +102,20 @@ public class HomeScreen extends AppCompatActivity implements SensorEventListener
     @Override
     public void onResume() {
         super.onResume();
-        sensorHelper.sensorManager.registerListener(this, sensorHelper.accelerometer, SensorManager.SENSOR_DELAY_UI);
-        sensorHelper.sensorManager.registerListener(this, sensorHelper.magnetometer, SensorManager.SENSOR_DELAY_UI);
-        handleLocationPermissions();
-        createGeoFence();
-    }
+//        sensorHelper.sensorManager.registerListener(this, sensorHelper.accelerometer, SensorManager.SENSOR_DELAY_UI);
+//        sensorHelper.sensorManager.registerListener(this, sensorHelper.magnetometer, SensorManager.SENSOR_DELAY_UI);
 
+        handleLocationPermissions();
+    }
+    
     private void handleLocationPermissions() {
         Log.d(TAG, "handleLocationPermissions: Attempting to get location");
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             Log.d(TAG, "getLastLocation: Coarse and Fine Location Allowed");
             if (isLocationEnabled()) {
                 Log.d(TAG, "getLastLocation: Location Enabled");
-                locationHelper.listenForLocationUpdates(sensorHelper);
+//                locationHelper.listenForLocationUpdates(sensorHelper);
+                startLocationService();
             } else {
                 Log.d(TAG, "getLastLocation: Location not Enabled");
                 startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
@@ -164,7 +132,6 @@ public class HomeScreen extends AppCompatActivity implements SensorEventListener
         super.onPause();
         sensorHelper.sensorManager.unregisterListener(this);
         locationHelper.stopListeningForUpdates();
-        removeGeoFence();
     }
 
     @Override
@@ -179,6 +146,26 @@ public class HomeScreen extends AppCompatActivity implements SensorEventListener
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
 
+    }
+
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void startLocationService() {
+        if (isMyServiceRunning(LocationMonitorService.class)) {
+            Log.d(TAG, "onResume: Service is already running");
+        } else {
+            Log.d(TAG, "onResume: Service is not running, it will be started");
+            getApplicationContext().startForegroundService(new Intent(this, LocationMonitorService.class));
+        }
     }
 
 }

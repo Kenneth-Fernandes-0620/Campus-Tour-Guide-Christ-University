@@ -22,10 +22,10 @@ public class GeofenceHelper extends ContextWrapper {
     public GeofencingClient geofencingClient;
 
     public static final HashMap<String, double[]> GEOFENCE_List = new HashMap<String, double[]>() {{
-        put("Central Block", new double[]{12.934442018122818, 77.60595590343786, 100});
-        put("Block 1", new double[]{12.93400975006008, 77.60680613915532, 100});
-        put("Block 2", new double[]{12.93284567176461, 77.60642150871381, 100});
-        put("KE Hall", new double[]{12.932311542073768, 77.60576906992978, 100});
+        put("Central Block", new double[]{12.934442018122818, 77.60595590343786, 20});
+        put("Block 1", new double[]{12.93400975006008, 77.60680613915532, 20});
+        put("Block 2", new double[]{12.93284567176461, 77.60642150871381, 20});
+        put("KE Hall", new double[]{12.932311542073768, 77.60576906992978, 20});
     }};
 
     public GeofenceHelper(Context context, GeofencingClient geofencingClient) {
@@ -36,7 +36,7 @@ public class GeofenceHelper extends ContextWrapper {
     public GeofencingRequest getGeofencingRequest(Geofence geofence) {
         return new GeofencingRequest.Builder()
                 .addGeofence(geofence)
-                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER | GeofencingRequest.INITIAL_TRIGGER_DWELL)
+                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER | GeofencingRequest.INITIAL_TRIGGER_DWELL | GeofencingRequest.INITIAL_TRIGGER_EXIT)
                 .build();
     }
 
