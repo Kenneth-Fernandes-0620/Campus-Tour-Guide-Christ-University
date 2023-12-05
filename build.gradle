@@ -3,7 +3,6 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.4.2'
@@ -17,6 +16,8 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        //noinspection JcenterRepositoryObsolete below repo required for 'com.google.vr:sdk-panowidget:1.180.0'
+        jcenter()
         maven {
             url 'https://api.mapbox.com/downloads/v2/releases/maven'
             authentication {

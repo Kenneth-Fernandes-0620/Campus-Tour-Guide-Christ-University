@@ -6,14 +6,12 @@
 
 package org.pytorch.demo.objectdetection;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -22,7 +20,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -50,7 +47,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements Runnable {
     private int mImageIndex = 0;
-    private String[] mTestImages = {"test1.png", "test2.jpg", "test3.png"};
+    // private String[] mTestImages = {"test1.png", "test2.jpg", "test3.png"};
 
     private ImageView mImageView;
     private ResultView mResultView;
@@ -92,13 +89,13 @@ public class MainActivity extends AppCompatActivity implements Runnable {
         }
 
         setContentView(R.layout.activity_main);
-
-        try {
-            mBitmap = BitmapFactory.decodeStream(getAssets().open(mTestImages[mImageIndex]));
-        } catch (IOException e) {
-            Log.e("Object Detection", "Error reading assets", e);
-            finish();
-        }
+//
+//        try {
+//            mBitmap = BitmapFactory.decodeStream(getAssets().open(mTestImages[mImageIndex]));
+//        } catch (IOException e) {
+//            Log.e("Object Detection", "Error reading assets", e);
+//            finish();
+//        }
 
         // mImageView = findViewById(R.id.imageView);
 //        mImageView.setImageBitmap(mBitmap);
@@ -198,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements Runnable {
 //        });
 
         try {
-            mModule = LiteModuleLoader.load(MainActivity.assetFilePath(getApplicationContext(), "best.torchscript2.ptl"));
+            mModule = LiteModuleLoader.load(MainActivity.assetFilePath(getApplicationContext(), "best.torchscript3.ptl"));
             BufferedReader br = new BufferedReader(new InputStreamReader(getAssets().open("classes.txt")));
             String line;
             List<String> classes = new ArrayList<>();
@@ -232,7 +229,8 @@ public class MainActivity extends AppCompatActivity implements Runnable {
                         Uri selectedImage = data.getData();
                         String[] filePathColumn = {MediaStore.Images.Media.DATA};
                         if (selectedImage != null) {
-                            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                            Cursor cursor = getContentResolver().query(selectedImage,
+                                    filePathColumn, null, null, null);
                             if (cursor != null) {
                                 cursor.moveToFirst();
                                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
@@ -269,5 +267,4 @@ public class MainActivity extends AppCompatActivity implements Runnable {
             mResultView.setVisibility(View.VISIBLE);
         });
     }
-
 }

@@ -69,8 +69,8 @@ public class HomeScreen extends AppCompatActivity implements SensorEventListener
         saveFab.setOnClickListener(v -> startActivity(new Intent(HomeScreen.this, MainActivity.class)));
         signupFab.setOnClickListener(v -> startActivity(new Intent(HomeScreen.this, MainActivity.class)));
 
-//        sensorHelper = new SensorHelper(this); // sensors
-//        locationHelper = new LocationHelper((LocationManager) getSystemService(Context.LOCATION_SERVICE), (TextView) findViewById(R.id.heading)); // location
+        sensorHelper = new SensorHelper(this); // sensors
+        locationHelper = new LocationHelper((LocationManager) getSystemService(Context.LOCATION_SERVICE)); // location
     }
 
     private void animateFab() {
@@ -107,7 +107,7 @@ public class HomeScreen extends AppCompatActivity implements SensorEventListener
 
         handleLocationPermissions();
     }
-    
+
     private void handleLocationPermissions() {
         Log.d(TAG, "handleLocationPermissions: Attempting to get location");
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {

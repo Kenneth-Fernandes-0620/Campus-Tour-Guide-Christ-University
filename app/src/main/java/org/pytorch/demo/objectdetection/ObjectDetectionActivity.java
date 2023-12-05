@@ -8,7 +8,6 @@ import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.media.Image;
-import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.TextureView;
 import android.view.View;
@@ -64,7 +63,7 @@ public class ObjectDetectionActivity extends AbstractCameraXActivity<ObjectDetec
         il=findViewById(R.id.infolayout);
         dText=findViewById(R.id.directiontext);
         arrow=findViewById(R.id.arrow);
-       // p= new Pronunciation(getApplicationContext());
+        // p= new Pronunciation(getApplicationContext());
         infobtn =findViewById(R.id.infobtn);
         return ((ViewStub) findViewById(R.id.object_detection_texture_view_stub))
                 .inflate()
@@ -128,7 +127,7 @@ public class ObjectDetectionActivity extends AbstractCameraXActivity<ObjectDetec
     protected AnalysisResult analyzeImage(ImageProxy image, int rotationDegrees) {
         try {
             if (mModule == null) {
-                mModule = LiteModuleLoader.load(MainActivity.assetFilePath(getApplicationContext(), "best.torchscript2.ptl"));
+                mModule = LiteModuleLoader.load(MainActivity.assetFilePath(getApplicationContext(), "best.torchscript3.ptl"));
             }
         } catch (IOException e) {
             Log.e("Object Detection", "Error reading assets", e);
@@ -159,9 +158,9 @@ public class ObjectDetectionActivity extends AbstractCameraXActivity<ObjectDetec
         infobtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent i= new Intent(ObjectDetectionActivity.this,DisplayActivity.class);
-//                i.putExtra("blockname",title1);
-//                startActivity(i);
+                Intent i= new Intent(ObjectDetectionActivity.this,DisplayActivity.class);
+                i.putExtra("blockname",title1);
+                startActivity(i);
             }
         });
     }

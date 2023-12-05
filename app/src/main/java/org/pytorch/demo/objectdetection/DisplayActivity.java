@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.vr.sdk.widgets.pano.VrPanoramaView;
 import com.squareup.picasso.Picasso;
 
 import org.pytorch.demo.objectdetection.data.DatabaseHandler;
@@ -61,7 +62,7 @@ public class DisplayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
         Intent intent = getIntent();
-//        blockname = intent.getStringExtra("blockname");
+        blockname = intent.getStringExtra("blockname");
         title = findViewById(R.id.title);
 //        title.setText(blockname);
         cb = findViewById(R.id.camerabtn);
@@ -76,6 +77,60 @@ public class DisplayActivity extends AppCompatActivity {
         Pronunciation p = new Pronunciation(getApplicationContext());
 
         db = new DatabaseHandler(this);
+        db.onUpgrade(db.getWritableDatabase(), 1, 2);
+
+        // Inserting data into the database
+        db.addData(new Building_Info(101, "Office of Examinations", "001", "office", "ground floor", "block 1"));
+        db.addData(new Building_Info(102, "Office of International Affairs", "013", "office", "ground floor", "block 1"));
+        db.addData(new Building_Info(103, "Scholarship and Fellowship Support Cell", "014", "office", "ground floor", "block 1"));
+        db.addData(new Building_Info(104, "Department of Life Sciences", "014", "department", "ground floor", "block 1"));
+        db.addData(new Building_Info(105, "Department of Chemistry", "009", "department", "ground floor", "block 1"));
+        db.addData(new Building_Info(106, "IT Services", "012", "office", "ground floor", "block 1"));
+        db.addData(new Building_Info(107, "Associate Director Office of International Affairs", "015", "office", "ground floor", "block 1"));
+        db.addData(new Building_Info(108, "Deans Office -School of Arts and Humanities", "016", "office", "ground floor", "block 1"));
+        db.addData(new Building_Info(109, "Deans Office -School of Science", "017", "office", "ground floor", "block 1"));
+        db.addData(new Building_Info(110, "Reception", "018", "office", "ground floor", "block 1"));
+        db.addData(new Building_Info(111, "Department of Languages", "103", "department", "first floor", "block 1"));
+        db.addData(new Building_Info(112, "Department of Psychology", "104", "department", "first floor", "block 1"));
+        db.addData(new Building_Info(113, "Department of English", "107", "department", "first floor", "block 1"));
+        db.addData(new Building_Info(114, "Department of life sciences-2", "111", "department", "first floor", "block 1"));
+        db.addData(new Building_Info(115, "Counsellor Office", "117", "office", "first floor", "block 1"));
+        db.addData(new Building_Info(116, "Center for Counselling and Health Services", "203", "office", "second floor", "block 1"));
+        db.addData(new Building_Info(117, "Department of Physical Education", "204", "department", "second floor", "block 1"));
+        db.addData(new Building_Info(118, "Department of Sociology", "211", "department", "second floor", "block 1"));
+        db.addData(new Building_Info(119, "Center for Social Action Office", "212", "office", "second floor", "block 1"));
+        db.addData(new Building_Info(120, "Mini Auditorium", "213", "others", "second floor", "block 1"));
+        db.addData(new Building_Info(121, "Knowledge Center", "N/A", "others", "sixth floor", "central block"));
+        db.addData(new Building_Info(122, "Office of Accounts", "N/A", "office", "ground floor", "central block"));
+        db.addData(new Building_Info(123, "IBM", "N/A", "office", "ground floor", "central block"));
+        db.addData(new Building_Info(124, "Office of Admissions", "N/A", "office", "ground floor", "central block"));
+        db.addData(new Building_Info(125, "Reception", "N/A", "office", "ground floor", "central block"));
+        db.addData(new Building_Info(126, "Internal Quality Assurance Cell", "N/A", "office", "first floor", "central block"));
+        db.addData(new Building_Info(127, "Documentation Room", "112", "office", "first floor", "central block"));
+        db.addData(new Building_Info(128, "School of Business and Management", "N/A", "department", "second floor", "central block"));
+        db.addData(new Building_Info(129, "School of Law", "N/A", "department", "fourth floor", "central block"));
+        db.addData(new Building_Info(130, "Department of International Studies, Political Science and History", "N/A", "department", "sixth floor", "central block"));
+        db.addData(new Building_Info(131, "Department of Sociology and Social Work", "N/A", "department", "sixth floor", "central block"));
+        db.addData(new Building_Info(132, "Department of PG Computer Science", "N/A", "department", "eighth floor", "central block"));
+        db.addData(new Building_Info(133, "Skyview", "N/A", "others", "tenth floor", "central block"));
+        db.addData(new Building_Info(134, "Campus View", "N/A", "others", "tenth floor", "central block"));
+        db.addData(new Building_Info(135, "Department of Commerce Office", "508", "office", "ground floor", "block 2"));
+        db.addData(new Building_Info(136, "Centre for Mathematical Need", "518", "Office", "ground floor", "block 2"));
+        db.addData(new Building_Info(137, "Seminar Hall", "526", "others", "ground floor", "block 2"));
+        db.addData(new Building_Info(138, "Department of Commerce", "528", "department", "ground floor", "block 2"));
+        db.addData(new Building_Info(139, "Department of Computer Science Staff Room", "622", "department", "first floor", "block 2"));
+        db.addData(new Building_Info(140, "Department of Computer Science", "628", "department", "first floor", "block 2"));
+        db.addData(new Building_Info(141, "Centre for Counseling and Health Services", "711", "office", "second floor", "block 2"));
+        db.addData(new Building_Info(142, "Assoc. Dean School of Science", "711A", "office", "second floor", "block 2"));
+        db.addData(new Building_Info(143, "Centre for Placement and Career Guidance", "721B", "office", "second floor", "block 2"));
+        db.addData(new Building_Info(144, "Department of Life Science III", "714", "department", "second floor", "block 2"));
+        db.addData(new Building_Info(145, "Department of Statistics", "709B", "department", "second floor", "block 2"));
+        db.addData(new Building_Info(146, "Department of Statistics and Data Science", "709A", "department", "second floor", "block 2"));
+        db.addData(new Building_Info(147, "Department of Life Science", "708", "department", "second floor", "block 2"));
+        db.addData(new Building_Info(148, "School of Education", "NA", "department", "third floor", "block 2"));
+        db.addData(new Building_Info(149, "Panel Room", "729", "others", "second floor", "block 2"));
+        db.addData(new Building_Info(150, "Assembly Hall", "NA", "others", "third floor", "block 2"));
+
         rv = findViewById(R.id.officedatarv);
         rv1 = findViewById(R.id.officedatarv1);
         rv2 = findViewById(R.id.officedatarv2);
@@ -178,7 +233,8 @@ public class DisplayActivity extends AppCompatActivity {
 //
 //            }
 //        });
-
+        panoramaView = findViewById(R.id.viewPanaroma);
+        loadPanoramaImage();
         //dropdown code
 
         arrowd.setOnClickListener(view -> {
@@ -311,11 +367,7 @@ public class DisplayActivity extends AppCompatActivity {
             estabinfo.setText("1990");
             history.setText("N/A");
             floorinfo.setText("3");
-
-
         }
-
-
     }
 
     void setData(String type) {
@@ -343,13 +395,44 @@ public class DisplayActivity extends AppCompatActivity {
 
         }
     }
-//    public  void speakData()
-//    {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            textToSpeech.speak(blockname,TextToSpeech.QUEUE_FLUSH,null,null);
-//        } else {
-//            textToSpeech.speak(blockname, TextToSpeech.QUEUE_FLUSH, null);
-//        }
-//    }
 
+    private void loadPanoramaImage() {
+        VrPanoramaView.Options options = new VrPanoramaView.Options();
+        panoramaView.setPureTouchTracking(true);
+        panoramaView.setStereoModeButtonEnabled(false);
+        panoramaView.setFullscreenButtonEnabled(true);
+        panoramaView.setVerticalFadingEdgeEnabled(false);
+        panoramaView.setVerticalScrollBarEnabled(false);
+        try {
+            options.inputType = VrPanoramaView.Options.TYPE_MONO;
+//            Picasso
+//                    .get()
+//                    .load("https://firebasestorage.googleapis.com/v0/b/mobile-app-da42b.appspot.com/o/christ_football_ground.jpg?alt=media&token=9f9e3498-62c1-4bd4-9943-222f3492d102")
+//                    .into(panoramaView);
+            panoramaView.loadImageFromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.block2_surroundings), options);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+//        VrPanoramaView.Options options = new VrPanoramaView.Options();
+//        String url = "https://firebasestorage.googleapis.com/v0/b/mobile-app-da42b.appspot.com/o/block2_surroundings.jpg?alt=media&token=7fc26901-cc31-404b-b901-b703682e6264";
+//
+//        Picasso.get().load(url).into(new Target() {
+//            @Override
+//            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+//                options.inputType = VrPanoramaView.Options.TYPE_MONO;
+//                panoramaView.loadImageFromBitmap(bitmap, options);
+//            }
+//
+//            @Override
+//            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+//                e.printStackTrace();
+//            }
+//
+//            @Override
+//            public void onPrepareLoad(Drawable placeHolderDrawable) {
+//                // Optional: Handle placeholder drawable preparation
+//            }
+//        });
+    }
 }

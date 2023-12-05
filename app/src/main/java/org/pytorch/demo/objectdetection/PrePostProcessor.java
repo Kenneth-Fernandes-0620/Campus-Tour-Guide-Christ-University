@@ -36,9 +36,9 @@ public class PrePostProcessor {
 
     // model output is of size 25200*(num_of_class+5)
     private static int mOutputRow = 25200; // as decided by the YOLOv5 model for input image of size 640*640
-    private static int mOutputColumn = 8; // left, top, right, bottom, score and 80 class probability
+    private static int mOutputColumn = 9; // left, top, right, bottom, score and 80 class probability
     private static float mThreshold = 0.30f; // score above which a detection is generated
-    private static int mNmsLimit = 1;
+    private static int mNmsLimit = 2;
 
     static String[] mClasses;
 
@@ -119,7 +119,7 @@ public class PrePostProcessor {
     static ArrayList<Result> outputsToNMSPredictions(float[] outputs, float imgScaleX, float imgScaleY, float ivScaleX, float ivScaleY, float startX, float startY) {
         ArrayList<Result> results = new ArrayList<>();
         for (int i = 0; i< mOutputRow; i++) {
-            if (outputs[i* mOutputColumn +4] > mThreshold) {
+            if (outputs[i* mOutputColumn +4] > mThreshold ) {
                 float x = outputs[i* mOutputColumn];
                 float y = outputs[i* mOutputColumn +1];
                 float w = outputs[i* mOutputColumn +2];
