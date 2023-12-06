@@ -1,11 +1,13 @@
 package org.pytorch.demo.objectdetection;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -17,6 +19,7 @@ import android.transition.AutoTransition;
 import android.transition.TransitionManager;
 import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -39,7 +42,7 @@ import java.util.Locale;
 
 public class DisplayActivity extends AppCompatActivity {
 
-    ImageView capimg, mapimg;
+    ImageView capimg;
     VrPanoramaView panoramaView;
     ImageButton arrow, arrow1, arrow2, arrowd;
     LinearLayout hiddenView, hiddenView2;
@@ -55,7 +58,7 @@ public class DisplayActivity extends AppCompatActivity {
     MyListAdapter ml;
     TextToSpeech textToSpeech;
     ImageButton cb;
-    ImageButton la, ra, ua, da, relocate;
+    SQLiteDatabase db1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +67,7 @@ public class DisplayActivity extends AppCompatActivity {
         Intent intent = getIntent();
         blockname = intent.getStringExtra("blockname");
         title = findViewById(R.id.title);
-//        title.setText(blockname);
+        title.setText(blockname);
         cb = findViewById(R.id.camerabtn);
         estabinfo = findViewById(R.id.estab_info);
         floorinfo = findViewById(R.id.floor_info);
@@ -74,10 +77,12 @@ public class DisplayActivity extends AppCompatActivity {
 //        da=findViewById(R.id.downarrow);
 //        loctext=findViewById(R.id.loctext);
 //        relocate=findViewById(R.id.relocate);
+//        expand=findViewById(R.id.expand);
         Pronunciation p = new Pronunciation(getApplicationContext());
 
         db = new DatabaseHandler(this);
         db.onUpgrade(db.getWritableDatabase(), 1, 2);
+
 
         // Inserting data into the database
         db.addData(new Building_Info(101, "Office of Examinations", "001", "office", "ground floor", "block 1"));
@@ -152,7 +157,7 @@ public class DisplayActivity extends AppCompatActivity {
         arrowd = findViewById(R.id.arrow_button_d);
         hiddenViewd = findViewById(R.id.hidden_view_d);
         history = findViewById(R.id.history);
-        //  mapimg=findViewById(R.id.mapimg);
+        // mapimg=findViewById(R.id.mapimg);
 
 
         Handler handler = new Handler();
@@ -176,23 +181,24 @@ public class DisplayActivity extends AppCompatActivity {
             }
         });
 
-        relocate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Picasso
-                        .get()
-                        .load("https://firebasestorage.googleapis.com/v0/b/mobile-app-da42b.appspot.com/o/block2.png?alt=media&token=812f4a39-b71f-4ea7-a37d-86ae9d9c857c")
-                        .into(mapimg);
-
-                ra.setVisibility(View.VISIBLE);
-                la.setVisibility(View.VISIBLE);
-                da.setVisibility(View.VISIBLE);
-                ua.setVisibility(View.VISIBLE);
-            }
-
-        });
-
-
+//        relocate.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Picasso
+//                        .get()
+//                        .load("https://firebasestorage.googleapis.com/v0/b/mobile-app-da42b.appspot.com/o/block2.png?alt=media&token=812f4a39-b71f-4ea7-a37d-86ae9d9c857c")
+//                        .into(mapimg);
+//
+//                ra.setVisibility(View.VISIBLE);
+//                la.setVisibility(View.VISIBLE);
+//                da.setVisibility(View.VISIBLE);
+//                ua.setVisibility(View.VISIBLE);
+//            }
+//
+//        });
+//
+//
+//
 //        ra.setOnTouchListener(new View.OnTouchListener() {
 //            @Override
 //            public boolean onTouch(View v, MotionEvent event) {
@@ -200,7 +206,7 @@ public class DisplayActivity extends AppCompatActivity {
 //                return false;
 //            }
 //        });
-
+//
 //        ra.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -233,8 +239,17 @@ public class DisplayActivity extends AppCompatActivity {
 //
 //            }
 //        });
-        panoramaView = findViewById(R.id.viewPanaroma);
-        loadPanoramaImage();
+//        panoramaView = findViewById(R.id.viewPanaroma);
+//        loadPanoramaImage();
+
+
+        findViewById(R.id.openChromeTabs).setOnClickListener(listener -> {
+            String url = "https://renderstuff.com/tools/360-panorama-web-viewer/";
+            CustomTabsIntent tabsIntent = new CustomTabsIntent.Builder()
+                    .build();
+            tabsIntent.launchUrl(DisplayActivity.this, Uri.parse(url));
+        });
+
         //dropdown code
 
         arrowd.setOnClickListener(view -> {
@@ -396,6 +411,14 @@ public class DisplayActivity extends AppCompatActivity {
         }
     }
 
+    //    public  void speakData()
+//    {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            textToSpeech.speak(blockname,TextToSpeech.QUEUE_FLUSH,null,null);
+//        } else {
+//            textToSpeech.speak(blockname, TextToSpeech.QUEUE_FLUSH, null);
+//        }
+//    }
     private void loadPanoramaImage() {
         VrPanoramaView.Options options = new VrPanoramaView.Options();
         panoramaView.setPureTouchTracking(true);
@@ -435,4 +458,5 @@ public class DisplayActivity extends AppCompatActivity {
 //            }
 //        });
     }
+
 }

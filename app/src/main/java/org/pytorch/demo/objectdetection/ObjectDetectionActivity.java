@@ -8,6 +8,7 @@ import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.YuvImage;
 import android.media.Image;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.TextureView;
 import android.view.View;
@@ -57,14 +58,14 @@ public class ObjectDetectionActivity extends AbstractCameraXActivity<ObjectDetec
     @Override
     protected TextureView getCameraPreviewTextureView() {
         mResultView = findViewById(R.id.resultView);
-        titleview=findViewById(R.id.title);
-        estabinfo=findViewById(R.id.estab_info);
-        floorinfo=findViewById(R.id.floor_info);
-        il=findViewById(R.id.infolayout);
-        dText=findViewById(R.id.directiontext);
-        arrow=findViewById(R.id.arrow);
+        titleview = findViewById(R.id.title);
+        estabinfo = findViewById(R.id.estab_info);
+        floorinfo = findViewById(R.id.floor_info);
+        il = findViewById(R.id.infolayout);
+        dText = findViewById(R.id.directiontext);
+        arrow = findViewById(R.id.arrow);
         // p= new Pronunciation(getApplicationContext());
-        infobtn =findViewById(R.id.infobtn);
+        infobtn = findViewById(R.id.infobtn);
         return ((ViewStub) findViewById(R.id.object_detection_texture_view_stub))
                 .inflate()
                 .findViewById(R.id.object_detection_texture_view);
@@ -92,7 +93,7 @@ public class ObjectDetectionActivity extends AbstractCameraXActivity<ObjectDetec
 
 
         }
-        title1=mResultView.title;
+        title1 = mResultView.title;
         showInference();
 
         mResultView.invalidate();
@@ -144,10 +145,10 @@ public class ObjectDetectionActivity extends AbstractCameraXActivity<ObjectDetec
         final Tensor outputTensor = outputTuple[0].toTensor();
         final float[] outputs = outputTensor.getDataAsFloatArray();
 
-        float imgScaleX = (float)bitmap.getWidth() / PrePostProcessor.mInputWidth;
-        float imgScaleY = (float)bitmap.getHeight() / PrePostProcessor.mInputHeight;
-        float ivScaleX = (float)mResultView.getWidth() / bitmap.getWidth();
-        float ivScaleY = (float)mResultView.getHeight() / bitmap.getHeight();
+        float imgScaleX = (float) bitmap.getWidth() / PrePostProcessor.mInputWidth;
+        float imgScaleY = (float) bitmap.getHeight() / PrePostProcessor.mInputHeight;
+        float ivScaleX = (float) mResultView.getWidth() / bitmap.getWidth();
+        float ivScaleY = (float) mResultView.getHeight() / bitmap.getHeight();
 
         final ArrayList<Result> results = PrePostProcessor.outputsToNMSPredictions(outputs, imgScaleX, imgScaleY, ivScaleX, ivScaleY, 0, 0);
         return new AnalysisResult(results);
@@ -158,8 +159,8 @@ public class ObjectDetectionActivity extends AbstractCameraXActivity<ObjectDetec
         infobtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i= new Intent(ObjectDetectionActivity.this,DisplayActivity.class);
-                i.putExtra("blockname",title1);
+                Intent i = new Intent(ObjectDetectionActivity.this, DisplayActivity.class);
+                i.putExtra("blockname", title1);
                 startActivity(i);
             }
         });

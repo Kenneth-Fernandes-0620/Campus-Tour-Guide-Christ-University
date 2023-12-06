@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -102,8 +103,8 @@ public class HomeScreen extends AppCompatActivity implements SensorEventListener
     @Override
     public void onResume() {
         super.onResume();
-//        sensorHelper.sensorManager.registerListener(this, sensorHelper.accelerometer, SensorManager.SENSOR_DELAY_UI);
-//        sensorHelper.sensorManager.registerListener(this, sensorHelper.magnetometer, SensorManager.SENSOR_DELAY_UI);
+        sensorHelper.sensorManager.registerListener(this, sensorHelper.accelerometer, SensorManager.SENSOR_DELAY_UI);
+        sensorHelper.sensorManager.registerListener(this, sensorHelper.magnetometer, SensorManager.SENSOR_DELAY_UI);
 
         handleLocationPermissions();
     }

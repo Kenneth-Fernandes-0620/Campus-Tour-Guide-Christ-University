@@ -3,10 +3,13 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        jcenter()
+        maven {
+            url "https://repo.gradle.org/gradle/libs-releases/"
+        }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
-
+        classpath 'com.android.tools.build:gradle:8.2.0'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -16,8 +19,8 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        //noinspection JcenterRepositoryObsolete below repo required for 'com.google.vr:sdk-panowidget:1.180.0'
         jcenter()
+        maven { url 'https://jitpack.io' }
         maven {
             url 'https://api.mapbox.com/downloads/v2/releases/maven'
             authentication {
